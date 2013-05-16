@@ -178,7 +178,9 @@ $.extend($.jgrid,{
 				$(selector).data("gbox",o.gbox);
 			}
 			$(selector).show().attr("aria-hidden","false");
-			try{$(':input:visible',selector)[0].focus();}catch(_){}
+			//shuki add focusSelector check for conditional focusing 2012-12-11
+			if(o.focusSelector) //shuki end
+				try{$(':input:visible',selector)[0].focus();}catch(_){}
 		}
 	},
 	info_dialog : function(caption, content,c_b, modalopt) {
