@@ -451,11 +451,15 @@ $.jgrid.extend({
 							}, $.jgrid.ajaxOptions, $t.p.ajaxSelectOptions || {} ));
 						} else {
 							var oSv, sep, delim;
-							if(cm.searchoptions) {
+							//shuki 24/10/2012
+							//if(cm.searchoptions) {
+							if(cm.searchoptions && cm.searchoptions.value) { //shuki end
 								oSv = cm.searchoptions.value === undefined ? "" : cm.searchoptions.value;
 								sep = cm.searchoptions.separator === undefined ? ":" : cm.searchoptions.separator;
 								delim = cm.searchoptions.delimiter === undefined ? ";" : cm.searchoptions.delimiter;
-							} else if(cm.editoptions) {
+							//shuki 24/10/2012
+							//} else if(cm.editoptions) {
+							} else if(cm.editoptions && cm.editoptions.value) { //shuki end
 								oSv = cm.editoptions.value === undefined ? "" : cm.editoptions.value;
 								sep = cm.editoptions.separator === undefined ? ":" : cm.editoptions.separator;
 								delim = cm.editoptions.delimiter === undefined ? ";" : cm.editoptions.delimiter;
@@ -465,6 +469,16 @@ $.jgrid.extend({
 								elem.style.width = "100%";
 								$(elem).attr({name:cm.index || cm.name, id: "gs_"+cm.name});
 								var so, sv, ov, key, k;
+								//shuki 9/1/2012 passing select options as array of objects
+								var select_options = '';
+								if($.isArray(oSv)){
+									for (var i = 0; i < oSv.length; i++) {
+										var option = oSv[i];
+										select_options += '<option value="' + oSv[i].id + '">' + oSv[i].name + '</option>';
+									}
+									$(elem).append(select_options);
+								} else
+								//shuki end passing select options as an array of objects
 								if(typeof oSv === "string") {
 									so = oSv.split(delim);
 									for(k=0; k<so.length;k++){
