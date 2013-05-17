@@ -944,7 +944,10 @@ $.jgrid.extend({
 				$($t).triggerHandler("jqGridAddEditBeforeShowForm", [$("#"+frmgr), frmoper]);
 				if(onBeforeShow) { onBeforeShow.call($t, $("#"+frmgr), frmoper); }
 				$("#"+$.jgrid.jqID(IDs.themodal)).data("onClose",rp_ge[$t.p.id].onClose);
-				$.jgrid.viewModal("#"+$.jgrid.jqID(IDs.themodal),{gbox:"#gbox_"+$.jgrid.jqID(gID),jqm:p.jqModal, jqM: false, overlay: p.overlay, modal:p.modal, overlayClass : p.overlayClass});
+				//shuki pass the focusSelector to viewModal to enable not setting the focus 2012-12-11
+				//$.jgrid.viewModal("#"+$.jgrid.jqID(IDs.themodal),{gbox:"#gbox_"+$.jgrid.jqID(gID),jqm:p.jqModal, jqM: false, overlay: p.overlay, modal:p.modal, overlayClass : p.overlayClass});
+				$.jgrid.viewModal("#"+$.jgrid.jqID(IDs.themodal),{gbox:"#gbox_"+$.jgrid.jqID(gID),jqm:p.jqModal, jqM: false, overlay: p.overlay, modal:p.modal, overlayClass : p.overlayClass, focusSelector:rp_ge.focusSelector});
+				//shuki end
 				if(!closeovrl) {
 					$("." + $.jgrid.jqID(p.overlayClass)).click(function(){
 						if(!checkUpdates()) {return false;}
@@ -1820,7 +1823,8 @@ $.jgrid.extend({
 					.click(function(){
 						if (!$(this).hasClass('ui-state-disabled')) {
 							if ($.isFunction( o.addfunc )) {
-								o.addfunc.call($t);
+								//o.addfunc.call($t); shuki 24/10/2012 pass the add options 
+								o.addfunc.call($t, pAdd);
 							} else {
 								$($t).jqGrid("editGridRow","new",pAdd);
 							}
