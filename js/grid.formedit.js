@@ -10,7 +10,9 @@
  * http://www.gnu.org/licenses/gpl-2.0.html
 **/
 "use strict";
-var rp_ge = {};
+// shuki 11/1/2012 apply commit 5888295
+//var rp_ge = {};
+//shuki end
 $.jgrid.extend({
 	searchGrid : function (p) {
 		p = $.extend(true, {
@@ -349,6 +351,9 @@ $.jgrid.extend({
 			viewPagerButtons : true,
 			overlayClass : 'ui-widget-overlay'
 		}, $.jgrid.edit, p || {});
+		// shuki 11/1/2012 apply commit 5888295
+		var rp_ge = {};
+		//shuki end
 		rp_ge[$(this)[0].p.id] = p;
 		return this.each(function(){
 			var $t = this;
@@ -1537,6 +1542,9 @@ $.jgrid.extend({
 			serializeDelData : null,
 			useDataProxy : false
 		}, $.jgrid.del, p ||{});
+		// shuki 11/1/2012 apply commit 5888295
+		var rp_ge = {};
+		//shuki end
 		rp_ge[$(this)[0].p.id] = p;
 		return this.each(function(){
 			var $t = this;
@@ -1845,7 +1853,8 @@ $.jgrid.extend({
 							var sr = $t.p.selrow;
 							if (sr) {
 								if($.isFunction( o.editfunc ) ) {
-									o.editfunc.call($t, sr);
+									//o.editfunc.call($t, sr); shuki 2013/05/19 pass the ref to the edit options
+									o.editfunc.call($t, sr, pEdit);
 								} else {
 									$($t).jqGrid("editGridRow",sr,pEdit);
 								}
@@ -1870,7 +1879,8 @@ $.jgrid.extend({
 							var sr = $t.p.selrow;
 							if (sr) {
 								if($.isFunction( o.viewfunc ) ) {
-									o.viewfunc.call($t, sr);
+									//o.viewfunc.call($t, sr); shuki 2013/05/19 pass the ref to the view options
+									o.viewfunc.call($t, sr,pView);
 								} else {
 									$($t).jqGrid("viewGridRow",sr,pView);
 								}
