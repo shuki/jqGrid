@@ -1226,6 +1226,9 @@ $.jgrid.extend({
 			viewPagerButtons : true,
 			recreateForm : false
 		}, $.jgrid.view, p || {});
+		// shuki 25/5/2013 apply commit 5888295
+		var rp_ge = {};
+		//shuki end
 		rp_ge[$(this)[0].p.id] = p;
 		return this.each(function(){
 			var $t = this;
