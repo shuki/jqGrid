@@ -50,7 +50,7 @@ $.extend($.jgrid,{
 		p = $.extend(true, {}, $.jgrid.jqModal || {}, p);
 		var mw  = document.createElement('div'), rtlsup, self = this;
 		css = $.extend({}, css || {});
-		rtlsup = $(p.gbox).attr("dir") == "rtl" ? true : false;
+		rtlsup = $(p.gbox).attr("dir") === "rtl" ? true : false;
 		mw.className= "ui-widget ui-widget-content ui-corner-all ui-jqdialog";
 		mw.id = aIDs.themodal;
 		var mh = document.createElement('div');
@@ -222,7 +222,7 @@ $.extend($.jgrid,{
 		cnt += "</div>";
 
 		try {
-			if($("#info_dialog").attr("aria-hidden") == "false") {
+			if($("#info_dialog").attr("aria-hidden") === "false") {
 				$.jgrid.hideModal("#info_dialog",{jqm:jm});
 			}
 			$("#info_dialog").remove();
@@ -306,7 +306,7 @@ $.extend($.jgrid,{
 					if(!options.cols) { $(elem).css({width:"98%"});}
 				} else if (!options.cols) { options.cols = 20; }
 				if(!options.rows) { options.rows = 2; }
-				if(vl=='&nbsp;' || vl=='&#160;' || (vl.length==1 && vl.charCodeAt(0)==160)) {vl="";}
+				if(vl==='&nbsp;' || vl==='&#160;' || (vl.length===1 && vl.charCodeAt(0)===160)) {vl="";}
 				elem.value = vl;
 				setAttributes(elem, options);
 				$(elem).attr({"role":"textbox","multiline":"true"});
@@ -351,11 +351,9 @@ $.extend($.jgrid,{
 
 					if ($t.p && $t.p.idPrefix) {
 						rowid = $.jgrid.stripPref($t.p.idPrefix, rowid);
-					} else {
-						postData = undefined; // don't use postData for searching from jqFilter. One can implement the feature in the future if required.
 					}
 					$.ajax($.extend({
-						url: options.dataUrl,
+						url: $.isFunction(options.dataUrl) ? options.dataUrl.call($t, rowid, vl, String(options.name)) : options.dataUrl,
 						type : "GET",
 						dataType: "html",
 						data: $.isFunction(postData) ? postData.call($t, rowid, vl, String(options.name)) : postData,
@@ -370,7 +368,7 @@ $.extend($.jgrid,{
 							}
 							if(a) {
 								$(elem).append(a);
-								setAttributes(elem, options);
+								setAttributes(elem, options, postData ? ['postData'] : undefined );
 								if(options.size === undefined) { options.size =  msl ? 3 : 1;}
 								if(msl) {
 									ovm = vl.split(",");
@@ -417,7 +415,7 @@ $.extend($.jgrid,{
 							ov.setAttribute("role","option");
 							ov.value = sv[0]; ov.innerHTML = sv[1];
 							elem.appendChild(ov);
-							if (!msl &&  ($.trim(sv[0]) == $.trim(vl) || $.trim(sv[1]) == $.trim(vl))) { ov.selected ="selected"; }
+							if (!msl &&  ($.trim(sv[0]) === $.trim(vl) || $.trim(sv[1]) === $.trim(vl))) { ov.selected ="selected"; }
 							if (msl && ($.inArray($.trim(sv[1]), ovm)>-1 || $.inArray($.trim(sv[0]), ovm)>-1)) {ov.selected ="selected";}
 						}
 					} else if (typeof options.value === 'object') {
@@ -428,7 +426,7 @@ $.extend($.jgrid,{
 								ov.setAttribute("role","option");
 								ov.value = key; ov.innerHTML = oSv[key];
 								elem.appendChild(ov);
-								if (!msl &&  ( $.trim(key) == $.trim(vl) || $.trim(oSv[key]) == $.trim(vl)) ) { ov.selected ="selected"; }
+								if (!msl &&  ( $.trim(key) === $.trim(vl) || $.trim(oSv[key]) === $.trim(vl)) ) { ov.selected ="selected"; }
 								if (msl && ($.inArray($.trim(oSv[key]),ovm)>-1 || $.inArray($.trim(key),ovm)>-1)) { ov.selected ="selected"; }
 							}
 						}
@@ -440,13 +438,13 @@ $.extend($.jgrid,{
 			case "password" :
 			case "button" :
 				var role;
-				if(eltype=="button") { role = "button"; }
+				if(eltype==="button") { role = "button"; }
 				else { role = "textbox"; }
 				elem = document.createElement("input");
 				elem.type = eltype;
 				elem.value = vl;
 				setAttributes(elem, options);
-				if(eltype != "button"){
+				if(eltype !== "button"){
 					if(autowidth) {
 						if(!options.size) { $(elem).css({width:"98%"}); }
 					} else if (!options.size) { options.size = 20; }
@@ -474,8 +472,8 @@ $.extend($.jgrid,{
 						throw "e1";
 					}
 				} catch (e) {
-					if (e=="e1") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.nodefined, $.jgrid.edit.bClose);}
-					if (e=="e2") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.novalue,$.jgrid.edit.bClose);}
+					if (e==="e1") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.nodefined, $.jgrid.edit.bClose);}
+					if (e==="e2") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.novalue,$.jgrid.edit.bClose);}
 					else { $.jgrid.info_dialog($.jgrid.errors.errcap,typeof e==="string"?e:e.message,$.jgrid.edit.bClose); }
 				}
 			break;
@@ -541,7 +539,7 @@ $.extend($.jgrid,{
 			return false;
 		}
 			strDate = tsp[format[dln]].toString();
-			if (strDate.length<1 || tsp[format[dln]]<1 || tsp[format[dln]]>31 || (tsp[format[mln]]==2 && tsp[format[dln]]>daysInFebruary(tsp[format[j]])) || tsp[format[dln]] > daysInMonth[tsp[format[mln]]]){
+			if (strDate.length<1 || tsp[format[dln]]<1 || tsp[format[dln]]>31 || (tsp[format[mln]]===2 && tsp[format[dln]]>daysInFebruary(tsp[format[j]])) || tsp[format[dln]] > daysInMonth[tsp[format[mln]]]){
 				return false;
 			}
 		return true;
@@ -622,7 +620,7 @@ $.extend($.jgrid,{
 			if(edtrul.integer === true) {
 				if( !(rqfield === false && $.jgrid.isEmpty(val)) ) {
 					if(isNaN(val)) { return [false,nm+": "+$.jgrid.edit.msg.integer,""]; }
-					if ((val % 1 !== 0) || (val.indexOf('.') != -1)) { return [false,nm+": "+$.jgrid.edit.msg.integer,""];}
+					if ((val % 1 !== 0) || (val.indexOf('.') !== -1)) { return [false,nm+": "+$.jgrid.edit.msg.integer,""];}
 				}
 			}
 			if(edtrul.date === true) {
