@@ -197,8 +197,11 @@ $.jgrid.extend({
 					} else {
 						so  = (this.searchoptions && this.searchoptions.sopt) ? this.searchoptions.sopt[0] : this.stype==='select'?  'eq' : p.defaultSearch;
 					}
-					v = this.stype === "custom" && $.isFunction(this.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN" ?
+/*					v = this.stype === "custom" && $.isFunction(this.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN" ?
 						this.searchoptions.custom_value.call($t, $elem.children(".customelement:first"), "get") :
+						$elem.val();*/
+					v = this.stype === "custom" && $.isFunction(this.searchoptions.custom_value) && $elem.length > 0 ?
+						this.searchoptions.custom_value.call($t, $elem, "get") :
 						$elem.val();
 					if(v || so==="nu" || so==="nn") {
 						sdata[nm] = v;
@@ -557,6 +560,7 @@ $.jgrid.extend({
 							}
 						}
 						break;
+					/* shuki 8/7/2013 rewrite the search custom field handler	
 					case "custom":
 						$("td:eq(1)",stbl).append("<span style='width:95%;padding:0px;' name='"+(cm.index || cm.name)+"' id='gs_"+cm.name+"'/>");
 						$(thd).append(stbl);
@@ -578,6 +582,66 @@ $.jgrid.extend({
 							else { $.jgrid.info_dialog($.jgrid.errors.errcap,typeof e==="string"?e:e.message,$.jgrid.edit.bClose); }
 						}
 						break;
+						
+						shuki end comment out - start new code
+						*/
+					case "custom":
+						try {
+							if($.isFunction(soptions.custom_element)) {
+								var celm = soptions.custom_element.call($t,soptions.defaultValue !== undefined ? soptions.defaultValue: "",soptions);
+								if(celm) {
+									celm = $(celm).addClass("customelement inputfilter");
+									$(celm).attr({name:cm.index, id:'gs_'+ cm.name});
+									$(celm).css({width:'100%', padding:'0px'});
+									$("td:eq(1)",stbl).append(celm);
+									$(thd).append(stbl);
+								} else {
+									throw "e2";
+								}
+							} else {
+								throw "e1";
+							}
+						} catch (e) {
+							if (e === "e1") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.nodefined,$.jgrid.edit.bClose);}
+							if (e === "e2") { $.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_element' "+$.jgrid.edit.msg.novalue,$.jgrid.edit.bClose);}
+							else { $.jgrid.info_dialog($.jgrid.errors.errcap,typeof e==="string"?e:e.message,$.jgrid.edit.bClose); }
+						}
+
+						if(soptions.attr) {$("input",thd).attr(soptions.attr);}
+						$.jgrid.bindEv.call($t, $("input",thd)[0], soptions);
+						if(p.autosearch===true){
+							if(p.searchOnEnter) {
+								$("input",thd).keypress(function(e){
+									var key = e.charCode || e.keyCode || 0;
+									if(key === 13){
+										triggerToolbar();
+										return false;
+									}
+									return this;
+								});
+							} else {
+								$("input",thd).keydown(function(e){
+									var key = e.which;
+									switch (key) {
+										case 13:
+											return false;
+										case 9 :
+										case 16:
+										case 37:
+										case 38:
+										case 39:
+										case 40:
+										case 27:
+											break;
+										default :
+											if(timeoutHnd) { clearTimeout(timeoutHnd); }
+											timeoutHnd = setTimeout(function(){triggerToolbar();},500);
+									}
+								});
+							}
+						}
+						break;
+						// shuki end custom new code
 					}
 				}
 				$(th).append(thd);
