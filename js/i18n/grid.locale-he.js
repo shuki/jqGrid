@@ -85,9 +85,9 @@ $.extend($.jgrid,{
 		model : "אורך של colNames <> colModel!"
 	},
 	formatter : {
-		integer : {thousandsSeparator: " ", defaultValue: '0'},
-		number : {decimalSeparator:".", thousandsSeparator: " ", decimalPlaces: 2, defaultValue: '0.00'},
-		currency : {decimalSeparator:".", thousandsSeparator: " ", decimalPlaces: 2, prefix: "", suffix:"", defaultValue: '0.00'},
+		integer : {thousandsSeparator: ",", defaultValue: ''},
+		number : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, defaultValue: ''},
+		currency : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix:"", defaultValue: ''},
 		date : {
 			dayNames:   [
 				"א", "ב", "ג", "ד", "ה", "ו", "ש",
