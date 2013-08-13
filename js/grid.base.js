@@ -860,10 +860,10 @@ $.fn.jqGrid = function( pin ) {
 			cols:[],
 			footers: [],
 			dragStart: function(i,x,y) {
-				this.resizing = { idx: i, startX: x.clientX, sOL : y[0]};
+				this.resizing = { idx: i, startX: x.clientX, sOL : x.clientX-6};
 				this.hDiv.style.cursor = "col-resize";
 				this.curGbox = $("#rs_m"+$.jgrid.jqID(p.id),"#gbox_"+$.jgrid.jqID(p.id));
-				this.curGbox.css({display:"block",left:y[0],top:y[1],height:y[2]});
+				this.curGbox.css({display:"block",left:x.clientX-6,top:y[1],height:y[2]});
 				$(ts).triggerHandler("jqGridResizeStart", [x, i]);
 				if($.isFunction(p.resizeStart)) { p.resizeStart.call(ts,x,i); }
 				document.onselectstart=function(){return false;};
@@ -2760,7 +2760,7 @@ $.fn.jqGrid = function( pin ) {
 		}
 		if(hg) {$(grid.bDiv).hide();}
 		grid.cDiv = document.createElement("div");
-		var arf = ts.p.hidegrid===true ? $("<a role='link' href='javascript:void(0)'/>").addClass('ui-jqgrid-titlebar-close HeaderButton').hover(
+		var arf = ts.p.hidegrid===true ? $("<a role='link' class='ui-jqgrid-titlebar-close HeaderButton' />").hover(
 			function(){ arf.addClass('ui-state-hover');},
 			function() {arf.removeClass('ui-state-hover');})
 		.append("<span class='ui-icon ui-icon-circle-triangle-n'></span>").css((dir==="rtl"?"left":"right"),"0px") : "";
@@ -2799,7 +2799,7 @@ $.fn.jqGrid = function( pin ) {
 		}
 		hb = null;
 		if(ts.p.caption) {
-			var tdt = ts.p.datatype, gheight;
+			var tdt = ts.p.datatype;
 			if(ts.p.hidegrid===true) {
 				$(".ui-jqgrid-titlebar-close",grid.cDiv).click( function(e){
 					var onHdCl = $.isFunction(ts.p.onHeaderClick),
@@ -2814,7 +2814,6 @@ $.fn.jqGrid = function( pin ) {
 					counter = $(elems,"#gview_"+$.jgrid.jqID(ts.p.id)).length;
 
 					if(ts.p.gridstate === 'visible') {
-						gheight = $("#gbox_"+$.jgrid.jqID(ts.p.id)).height();
 						$(elems,"#gbox_"+$.jgrid.jqID(ts.p.id)).slideUp("fast", function() {
 							counter--;
 							if (counter === 0) {
@@ -2823,7 +2822,6 @@ $.fn.jqGrid = function( pin ) {
 								if($("#gbox_"+$.jgrid.jqID(ts.p.id)).hasClass("ui-resizable")) { $(".ui-resizable-handle","#gbox_"+$.jgrid.jqID(ts.p.id)).hide(); }
 								$(ts).triggerHandler("jqGridHeaderClick", [ts.p.gridstate,e]);
 								if(onHdCl) {if(!hg) {ts.p.onHeaderClick.call(ts,ts.p.gridstate,e);}}
-								$("#gbox_"+$.jgrid.jqID(ts.p.id)).height( $("#gview_"+$.jgrid.jqID(ts.p.id)).height());
 							}
 						});
 					} else if(ts.p.gridstate === 'hidden'){
@@ -2838,7 +2836,6 @@ $.fn.jqGrid = function( pin ) {
 								if(onHdCl) {if(!hg) {ts.p.onHeaderClick.call(ts,ts.p.gridstate,e);}}
 							}
 						});
-						$("#gbox_"+$.jgrid.jqID(ts.p.id)).height(gheight);
 					}
 					return false;
 				});
