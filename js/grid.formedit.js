@@ -524,14 +524,20 @@ $.jgrid.extend({
 				if(rowid === '_empty') {
 					$(cm).each(function(){
 						nm = this.name;
+						console.log(nm);
 						opt = $.extend({}, this.editoptions || {} );
 						fld = $("#"+$.jgrid.jqID(nm),"#"+fmid);
+						console.log(fld.val());
 						if(fld && fld.length && fld[0] !== null) {
 							vl = "";
+							//shuki check for default value before and not isntead checking for custom
+							if(opt.defaultValue )
+								vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
 							if(this.edittype === 'custom' && $.isFunction(opt.custom_value)) {
 								opt.custom_value.call($t, $("#"+nm,"#"+fmid),'set',vl);
 							} else if(opt.defaultValue ) {
-								vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
+								//vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
+								//shuki end default value
 								if(fld[0].type==='checkbox') {
 									vlc = vl.toLowerCase();
 									if(vlc.search(/(false|f|0|no|n|off|undefined)/i)<0 && vlc!=="") {
@@ -556,6 +562,7 @@ $.jgrid.extend({
 							}
 							if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = vl;}
 						}
+						console.log(fld.val());
 					});
 					$("#id_g","#"+fmid).val(rowid);
 					return;
