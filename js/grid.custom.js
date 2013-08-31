@@ -403,7 +403,10 @@ $.jgrid.extend({
 				if(this.stype === undefined) {this.stype='text';}
 				soptions = $.extend({},this.searchoptions || {});
 				if(this.search){
-					if(p.searchOperators) {
+					//shuki add ability to not show search operators 31/8/2013
+					//if(p.searchOperators) {
+					if(p.searchOperators && soptions.searchOperators !== false) {
+					//shuki end
 						so  = (soptions.sopt) ? soptions.sopt[0] : cm.stype==='select' ?  'eq' : p.defaultSearch;
 						for(i = 0;i<p.odata.length;i++) {
 							if(p.odata[i].oper === so) {
