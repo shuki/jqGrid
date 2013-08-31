@@ -41,10 +41,10 @@ $.extend($.jgrid,{
 			integer: "אנא, הכנס מספר שלם",
 			date: "אנא, הכנס תאריך תקין",
 			url: "הכתובת אינה תקינה. דרושה תחילית ('http://' או 'https://')",
-			nodefined : " is not defined!",
-			novalue : " return value is required!",
-			customarray : "Custom function should return array!",
-			customfcheck : "Custom function should be present in case of custom checking!"
+			nodefined : " לא מוגדר!",
+			novalue : " ערך מוחזר נדרש!",
+			customarray : "פונקציה מתואמת (custom function) חייבת להחזיר מערך!",
+			customfcheck : "פונקציה מתואמת (custom function) חייבת להיות מוגדרת למקרה של בדיקה מתואמת!"
 		}
 	},
 	view : {
@@ -85,9 +85,9 @@ $.extend($.jgrid,{
 		model : "אורך של colNames <> colModel!"
 	},
 	formatter : {
-		integer : {thousandsSeparator: ",", defaultValue: ''},
-		number : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, defaultValue: ''},
-		currency : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix:"", defaultValue: ''},
+		integer : {thousandsSeparator: ",", defaultValue: '0'},
+		number : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, defaultValue: '0.00'},
+		currency : {decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix:"", defaultValue: '0.00'},
 		date : {
 			dayNames:   [
 				"א", "ב", "ג", "ד", "ה", "ו", "ש",
