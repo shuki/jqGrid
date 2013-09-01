@@ -560,6 +560,12 @@ $.jgrid.extend({
 											timeoutHnd = setTimeout(function(){triggerToolbar();},500);
 									}
 								});
+								//shuki add paste event handler
+								$("input",thd).on('paste', function(e){
+									if(timeoutHnd) { clearTimeout(timeoutHnd); }
+									timeoutHnd = setTimeout(function(){triggerToolbar();},500);
+								});
+								//shuki end
 							}
 						}
 						break;
@@ -640,6 +646,10 @@ $.jgrid.extend({
 											if(timeoutHnd) { clearTimeout(timeoutHnd); }
 											timeoutHnd = setTimeout(function(){triggerToolbar();},500);
 									}
+								});
+								$("input",thd).on('paste', function(e){
+									if(timeoutHnd) { clearTimeout(timeoutHnd); }
+									timeoutHnd = setTimeout(function(){triggerToolbar();},500);
 								});
 							}
 						}
