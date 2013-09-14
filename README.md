@@ -15,3 +15,5 @@ package. For more information on jQuery, please refer to the jQuery web site.
 jqGrid's Home page can be found <a href="http://www.trirand.com/blog">here</a>.
 
 Working examples of jqGrid, with explanations, can be found <a href="http://www.trirand.com/jqgrid/jqgrid.html">here</a>
+
+used by shuki/jxset
