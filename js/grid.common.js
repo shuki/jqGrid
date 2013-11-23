@@ -269,7 +269,7 @@ $.extend($.jgrid,{
 	bindEv: function  (el, opt) {
 		var $t = this;
 		if($.isFunction(opt.dataInit)) {
-			opt.dataInit.call($t,el);
+			opt.dataInit.call($t,el,opt);
 		}
 		if(opt.dataEvents) {
 			$.each(opt.dataEvents, function() {
@@ -315,7 +315,7 @@ $.extend($.jgrid,{
 				elem = document.createElement("input");
 				elem.type = "checkbox";
 				if( !options.value ) {
-					var vl1 = vl.toLowerCase();
+					var vl1 = (vl+"").toLowerCase();
 					if(vl1.search(/(false|f|0|no|n|off|undefined)/i)<0 && vl1!=="") {
 						elem.checked=true;
 						elem.defaultChecked=true;

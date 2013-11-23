@@ -65,6 +65,7 @@ $.jgrid.extend({
 			if(!$t.grid) {return;}
 			var fid = "fbox_"+$t.p.id,
 			showFrm = true,
+			mustReload = true,
 			IDs = {themodal:'searchmod'+fid,modalhead:'searchhd'+fid,modalcontent:'searchcnt'+fid, scrollelm : fid},
 			defaultFilters  = $t.p.postData[p.sFilter];
 			if(typeof defaultFilters === "string") {
@@ -264,11 +265,16 @@ $.jgrid.extend({
 					}
 					$t.p.search = true;
 					$.extend($t.p.postData,sdata);
-					$($t).triggerHandler("jqGridFilterSearch");
-					if($.isFunction(p.onSearch) ) {
-						p.onSearch.call($t);
+					mustReload = $($t).triggerHandler("jqGridFilterSearch");
+					if( mustReload === undefined) {
+						mustReload = true;
 					}
-					$($t).trigger("reloadGrid",[{page:1}]);
+					if(mustReload && $.isFunction(p.onSearch) ) {
+						mustReload = p.onSearch.call($t, $t.p.filters);
+					}
+					if (mustReload !== false) {
+						$($t).trigger("reloadGrid",[{page:1}]);
+					}
 					if(p.closeAfterSearch) {
 						$.jgrid.hideModal("#"+$.jgrid.jqID(IDs.themodal),{gb:"#gbox_"+$.jgrid.jqID($t.p.id),jqm:p.jqModal,onClose: p.onClose});
 					}
@@ -288,11 +294,19 @@ $.jgrid.extend({
 						$(".ui-template", fil).val("default");
 					}
 					$.extend($t.p.postData,sdata);
-					$($t).triggerHandler("jqGridFilterReset");
-					if($.isFunction(p.onReset) ) {
-						p.onReset.call($t);
+					mustReload = $($t).triggerHandler("jqGridFilterReset");
+					if(mustReload === undefined) {
+						mustReload = true;
 					}
-					$($t).trigger("reloadGrid",[{page:1}]);
+					if(mustReload && $.isFunction(p.onReset) ) {
+						mustReload = p.onReset.call($t);
+					}
+					if(mustReload !== false) {
+						$($t).trigger("reloadGrid",[{page:1}]);
+					}
+					if (p.closeAfterReset) {
+						$.jgrid.hideModal("#"+$.jgrid.jqID(IDs.themodal),{gb:"#gbox_"+$.jgrid.jqID($t.p.id),jqm:p.jqModal,onClose: p.onClose});
+					}
 					return false;
 				});
 				showFilter($("#"+fid));
@@ -1125,8 +1139,6 @@ $.jgrid.extend({
 						return false;
 					});
 				}
-				$($t).triggerHandler("jqGridAddEditAfterShowForm", [$("#"+frmgr), frmoper]);
-				if(onAfterShow) { onAfterShow.call($t, $("#"+frmgr), frmoper); }
 				$(".fm-button","#"+$.jgrid.jqID(IDs.themodal)).hover(
 					function(){$(this).addClass('ui-state-hover');},
 					function(){$(this).removeClass('ui-state-hover');}
@@ -1203,6 +1215,8 @@ $.jgrid.extend({
 					}
 					return false;
 				});
+				$($t).triggerHandler("jqGridAddEditAfterShowForm", [$("#"+frmgr), frmoper]);
+				if(onAfterShow) { onAfterShow.call($t, $("#"+frmgr), frmoper); }
 			}
 			var posInit =getCurrPos();
 			updateNav(posInit[0],posInit);
@@ -2057,7 +2071,7 @@ $.jgrid.extend({
 		p = $.extend({
 			sepclass : "ui-separator",
 			sepcontent: '',
-                           position : "last"
+			position : "last"
 		}, p ||{});
 		return this.each(function() {
 			if( !this.grid)  {return;}
