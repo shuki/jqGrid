@@ -358,6 +358,10 @@ $.fn.jqFilter = function( arg ) {
 						cm.searchoptions.size = 10;
 					}
 				}
+				//shuki assign searchoption name 8/12/2013
+				if(!cm.searchoptions.name)
+					cm.searchoptions.name = cm.name;
+				//shuki end
 				var elm = $.jgrid.createEl.call($t, cm.inputtype,cm.searchoptions, "", true, that.p.ajaxSelectOptions || {}, true);
 				$(elm).addClass("input-elm");
 				//that.createElement(rule, "");
