@@ -233,7 +233,6 @@ $.fn.jqFilter = function( arg ) {
 			th.append(inputAddSubgroup);
 			if(this.p.ruleButtons === true) {
 			// button for adding a new rule
-			console.log($.jgrid);
 			//shuki get title from language file 14/12/2013
 			var inputAddRule = $("<input type='button' value='+' class='add-rule ui-add'/>"), cm;
 			inputAddRule.attr('title', $.jgrid.search.addRule);
