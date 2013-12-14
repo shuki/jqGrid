@@ -209,7 +209,10 @@ $.fn.jqFilter = function( arg ) {
 			// button for adding a new subgroup
 			var inputAddSubgroup ="<span></span>";
 			if(this.p.groupButton) {
-				inputAddSubgroup = $("<input type='button' value='+ {}' title='Add subgroup' class='add-group'/>");
+				//shuki get title from language file 14/12/2013
+				inputAddSubgroup = $("<input type='button' value='+ {}' class='add-group'/>");
+				inputAddSubgroup.attr('title', $.jgrid.search.addSubgroup);
+				//shuki end
 				inputAddSubgroup.bind('click',function() {
 					if (group.groups === undefined ) {
 						group.groups = [];
@@ -230,7 +233,11 @@ $.fn.jqFilter = function( arg ) {
 			th.append(inputAddSubgroup);
 			if(this.p.ruleButtons === true) {
 			// button for adding a new rule
-			var inputAddRule = $("<input type='button' value='+' title='Add rule' class='add-rule ui-add'/>"), cm;
+			console.log($.jgrid);
+			//shuki get title from language file 14/12/2013
+			var inputAddRule = $("<input type='button' value='+' class='add-rule ui-add'/>"), cm;
+			inputAddRule.attr('title', $.jgrid.search.addRule);
+			//shuki end
 			inputAddRule.bind('click',function() {
 				//if(!group) { group = {};}
 				if (group.rules === undefined) {
@@ -503,7 +510,10 @@ $.fn.jqFilter = function( arg ) {
 
 			// create button for: delete rule
 			if(this.p.ruleButtons === true) {
-			var ruleDeleteInput = $("<input type='button' value='-' title='Delete rule' class='delete-rule ui-del'/>");
+			//shuki get title from language file 14/12/2013
+			var ruleDeleteInput = $("<input type='button' value='-' class='delete-rule ui-del'/>");
+			ruleDeleteInput.attr('title', $.jgrid.search.deleteRule);
+			//shuki end
 			ruleDeleteTd.append(ruleDeleteInput);
 			//$(ruleDeleteInput).html("").height(20).width(30).button({icons: {  primary: "ui-icon-minus", text:false}});
 			ruleDeleteInput.bind('click',function() {
