@@ -275,7 +275,10 @@ $.fn.jqFilter = function( arg ) {
 
 			// button for delete the group
 			if (parentgroup !== null) { // ignore the first group
-				var inputDeleteGroup = $("<input type='button' value='-' title='Delete group' class='delete-group'/>");
+				//shuki get title from language file 14/12/2013
+				var inputDeleteGroup = $("<input type='button' value='-' class='delete-group'/>");
+				inputDeleteGroup.attr('title', $.jgrid.search.deleteSubgroup);
+				//shuki end
 				th.append(inputDeleteGroup);
 				inputDeleteGroup.bind('click',function() {
 				// remove group from parent
