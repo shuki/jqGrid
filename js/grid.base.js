@@ -1522,7 +1522,10 @@ $.fn.jqGrid = function( pin ) {
 					ts.p._index[rd[locid]] = ts.p.data.length-1;
 				}
 				if(ts.p.gridview === false ) {
-					$("#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));
+					//shuki 21/12/2013
+					//$("#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));
+					$("table#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));
+					//shuki end
 					self.triggerHandler("jqGridAfterInsertRow", [idr, rd, cur]);
 					if(afterInsRow) {ts.p.afterInsertRow.call(ts,idr,rd,cur);}
 					rowData=[];//ari=0;
@@ -2249,7 +2252,10 @@ $.fn.jqGrid = function( pin ) {
 				ts.grid.hDiv.scrollLeft = sscroll;
 			}
 			if(ts.p.subGrid && ts.p.datatype === 'local') {
-				$("td.sgexpanded","#"+$.jgrid.jqID(ts.p.id)).each(function(){
+				//shuki 21/12/2013
+				//$("td.sgexpanded","#"+$.jgrid.jqID(ts.p.id)).each(function(){
+				$("td.sgexpanded","table#"+$.jgrid.jqID(ts.p.id)).each(function(){
+				//shuki end
 					$(this).trigger("click");
 				});
 			}
@@ -3405,7 +3411,10 @@ $.jgrid.extend({
 		resortArray(ts.grid.headers);
 		resortRows($("thead:first", ts.grid.hDiv), keepHeader && ":not(.ui-jqgrid-labels)");
 		if (updateCells) {
-			resortRows($("#"+$.jgrid.jqID(ts.p.id)+" tbody:first"), ".jqgfirstrow, tr.jqgrow, tr.jqfoot");
+			//shuki 21/12/2013
+			//resortRows($("#"+$.jgrid.jqID(ts.p.id)+" tbody:first"), ".jqgfirstrow, tr.jqgrow, tr.jqfoot");
+			resortRows($("table#"+$.jgrid.jqID(ts.p.id)+" tbody:first"), ".jqgfirstrow, tr.jqgrow, tr.jqfoot");
+			//shuki end
 		}
 		if (ts.p.footerrow) {
 			resortRows($("tbody:first", ts.grid.sDiv));
