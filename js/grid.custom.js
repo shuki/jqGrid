@@ -58,9 +58,6 @@ $.jgrid.extend({
 			}
 			if ( idx !== -1 ){
 				var sort = $t.p.colModel[idx].sortable;
-				if(!sobj) {
-					sobj = $t.grid.headers[idx].el;
-				}
 				if ( typeof sort !== 'boolean' ) { sort =  true; }
 				if ( typeof reload !=='boolean' ) { reload = false; }
 				if ( sort ) { $t.sortData("jqgh_"+$t.p.id+"_" + colname, idx, reload, sor, sobj); }
@@ -187,7 +184,7 @@ $.jgrid.extend({
 			groupOp: 'AND',
 			defaultSearch : "bw",
 			searchOperators : false,
-			resetIcon : "x",
+			operandTitle : "Click to select search operation.",
 			operands : { "eq" :"==", "ne":"!","lt":"<","le":"<=","gt":">","ge":">=","bw":"^","bn":"!^","in":"=","ni":"!=","ew":"|","en":"!@","cn":"~","nc":"!~","nu":"#","nn":"!#"}
 		}, $.jgrid.search , p  || {});
 		return this.each(function(){
@@ -428,8 +425,7 @@ $.jgrid.extend({
 						soptions.clearSearch = true;
 					}
 					if(soptions.clearSearch) {
-						var csv = p.resetTitle || 'Clear Search Value';
-						$("td:eq(2)",stbl).append("<a title='"+csv+"' style='padding-right: 0.3em;padding-left: 0.3em;' class='clearsearchclass'>"+p.resetIcon+"</a>");
+						$("td:eq(2)",stbl).append("<a title='Clear Search Value' style='padding-right: 0.3em;padding-left: 0.3em;' class='clearsearchclass'>x</a>");
 					} else {
 						$("td:eq(2)", stbl).hide();
 					}

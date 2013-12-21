@@ -68,19 +68,6 @@ $.jgrid.extend({
 				} else {
 					return result;
 				}
-			},
-			parseResultValue : function( row, resultColName, pivotColName) {
-				var res = row[resultColName];
-				if(res !== undefined) {
-					if(!isNaN(res)) {
-						res = parseFloat( res );
-					} else {
-						res = 0;
-					}
-				} else {
-					res = 0;
-				}
-				return res;
 			}
 		}, options || {});
 		this.each(function(){
@@ -165,7 +152,7 @@ $.jgrid.extend({
 				row = rows[r];
 				groupValue = [];
 				pivotValue = $.trim(row[pivotCol.name]);
-				result = o.parseResultValue.call(this, row, resultCol.name, pivotCol.name);
+				result = parseFloat($.trim(row[resultCol.name]));
 				tmp = {};
 				i = 0;
 				while( i < grouplen ) {
@@ -205,7 +192,7 @@ $.jgrid.extend({
 				r++;
 			}
 			if(o.rowTotals) {
-				groups.push({name:'p_Total', label:'Total', summaryType:o.summaryType, summaryRound: o.summaryRound, summaryRoundType: o.summaryRoundType, formatter:'number'});
+				groups.push({name:'p_Total', label:'Total', summaryType:o.summaryType, summaryRound: o.summaryRound, summaryRoundType: o.summaryRoundType});
 			}
 			if( groupfields > 0) {
 				for(i=0;i<groupfields;i++) {
