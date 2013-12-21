@@ -1540,7 +1540,10 @@ $.fn.jqGrid = function( pin ) {
 				} else if(ts.p.treeGrid === true && fpos > 0) {
 					$(ts.rows[fpos]).after(rowData.join(''));
 				} else {
-					$("#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));
+					//shuki 21/12/2013
+					//$("#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));
+					$("table#"+$.jgrid.jqID(ts.p.id)+" tbody:first").append(rowData.join(''));					
+					//shuki end
 				}
 			}
 			if(ts.p.subGrid === true ) {
