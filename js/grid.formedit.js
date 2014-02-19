@@ -398,7 +398,10 @@ $.jgrid.extend({
 				closeovrl = false;
 			}
 			function getFormData(){
-				$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
+				// shuki 2014-02-20:select form elements in any place inside form table
+//				$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
+				$(".FormElement", frmtb).each(function() {
+				// shuki end
 					var celm = $(".customelement", this);
 					if (celm.length) {
 						var  elem = celm[0], nm = $(elem).attr('name');
@@ -542,7 +545,7 @@ $.jgrid.extend({
 						fld = $("#"+$.jgrid.jqID(nm),"#"+fmid);
 						if(fld && fld.length && fld[0] !== null) {
 							vl = "";
-							//shuki check for default value before and not isntead checking for custom
+							//shuki check for default value before and not instead checking for custom
 							if(opt.defaultValue )
 								vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
 							if(this.edittype === 'custom' && $.isFunction(opt.custom_value)) {
