@@ -400,7 +400,7 @@ $.jgrid.extend({
 			function getFormData(){
 				// shuki 2014-02-20:select form elements in any place inside form table
 //				$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
-				$(".FormElement", frmtb).each(function() {
+				$(".FormElement", $(frmtb).closest('form')).each(function() {
 				// shuki end
 					var celm = $(".customelement", this);
 					if (celm.length) {
