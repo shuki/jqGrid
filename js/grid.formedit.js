@@ -398,7 +398,7 @@ $.jgrid.extend({
 				closeovrl = false;
 			}
 			function getFormData(){
-				// shuki 2014-02-20:select form elements in any place inside form table
+				// shuki 2014-02-20:select form elements in any place inside form
 //				$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
 				$(".FormElement", $(frmtb).closest('form')).each(function() {
 				// shuki end
@@ -408,7 +408,10 @@ $.jgrid.extend({
 						$.each($t.p.colModel, function(){
 							if(this.name === nm && this.editoptions && $.isFunction(this.editoptions.custom_value)) {
 								try {
-									postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),frmtb),'get');
+									// shuki 2014-02-23:select form elements in any place inside form
+									//postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),frmtb),'get');
+									postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),$(frmtb).closest('form')),'get');
+									// shuki end
 									if (postdata[nm] === undefined) {throw "e1";}
 								} catch (e) {
 									if (e==="e1") {$.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_value' "+$.jgrid.edit.msg.novalue,$.jgrid.edit.bClose);}
