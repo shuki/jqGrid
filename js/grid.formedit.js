@@ -399,8 +399,11 @@ $.jgrid.extend({
 			}
 			function getFormData(){
 				// shuki 2014-02-20:select form elements in any place inside form
-//				$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
-				$(".FormElement", $(frmtb).closest('form')).each(function() {
+				//$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
+				//$(".FormElement", $(frmtb).closest('form')).each(function() {
+				// shuki 2014-03-12:exclude jsetgrid components
+				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+				$(".FormElement", $(frmtb).closest('form')).not(exclude).each(function() {
 				// shuki end
 					var celm = $(".customelement", this);
 					if (celm.length) {
