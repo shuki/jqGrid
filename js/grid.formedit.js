@@ -665,7 +665,14 @@ $.jgrid.extend({
 						cnt++;
 					}
 				});
-				if(cnt>0) {$("#id_g",frmtb).val(rowid);}
+				//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
+				//if(cnt>0) {$("#id_g",frmtb).val(rowid);}
+				if(cnt>0){
+					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+					var idg = $('[id="id_g"]',frmtb).not(exclude);
+					idg.val(rowid);
+				}
+				//shuki end
 			}
 			function setNulls() {
 				$.each($t.p.colModel, function(i,n){
@@ -930,7 +937,11 @@ $.jgrid.extend({
 			}
 			function getCurrPos() {
 				var rowsInGrid = $($t).jqGrid("getDataIDs"),
-				selrow = $("#id_g",frmtb).val(),
+				//shuki 2014-03-13 fix the retrival of id_g when jsetgrid exists
+				//selrow = $("#id_g",frmtb).val(),
+				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form')),
+				selrow = $('[id="id_g"]',frmtb).not(exclude).val(),
+				//shuki end
 				pos = $.inArray(selrow,rowsInGrid);
 				return [pos,rowsInGrid];
 			}
