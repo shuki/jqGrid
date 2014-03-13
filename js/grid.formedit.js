@@ -584,7 +584,11 @@ $.jgrid.extend({
 							if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = vl;}
 						}
 					});
-					$("#id_g","#"+fmid).val(rowid);
+					//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
+					//$("#id_g","#"+fmid).val(rowid);
+					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+					var idg = $('[id="id_g"]',"#"+fmid).not(exclude);
+					idg.val(rowid);
 					return;
 				}
 				var tre = $(obj).jqGrid("getInd",rowid,true);
@@ -1088,7 +1092,12 @@ $.jgrid.extend({
 						return false;
 					}
 					if(rp_ge[$t.p.id].navkeys[0]===true) {
-						if($("#id_g",frmtb).val() === "_empty") {return true;}
+						//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
+						//if($("#id_g",frmtb).val() === "_empty") {return true;}
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+						var idg = $('[id="id_g"]',frmtb).not(exclude);
+						if(idg.val() === "_empty") {return true;}
+						//shuki end
 						if(e.which === rp_ge[$t.p.id].navkeys[1]){ //up
 							$("#pData", frmtb+"_2").trigger("click");
 							return false;
@@ -1390,7 +1399,12 @@ $.jgrid.extend({
 						cnt++;
 					}
 				});
-				if(cnt>0) {$("#id_g","#"+frmtb).val(rowid);}
+				//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
+				//if(cnt>0) {$("#id_g","#"+frmtb).val(rowid);}
+				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form'));
+				var idg = $('[id="id_g"]',"#"+frmtb).not(exclude);
+				if(cnt>0) {$(idg,"#"+frmtb).val(rowid);}
+				//shuki end
 			}
 			function updateNav(cr,posarr){
 				var totr = posarr[1].length-1;
@@ -1411,7 +1425,11 @@ $.jgrid.extend({
 			}
 			function getCurrPos() {
 				var rowsInGrid = $($t).jqGrid("getDataIDs"),
-				selrow = $("#id_g","#"+frmtb).val(),
+				//shuki 2014-03-13 fix the retrival of id_g when jsetgrid exists
+				//selrow = $("#id_g","#"+frmtb).val(),
+				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form')),
+				selrow = $('[id="id_g"]',"#"+frmtb).not(exclude).val(),
+				//shuki end
 				pos = $.inArray(selrow,rowsInGrid);
 				return [pos,rowsInGrid];
 			}
