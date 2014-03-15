@@ -555,7 +555,12 @@ $.jgrid.extend({
 							if(opt.defaultValue )
 								vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
 							if(this.edittype === 'custom' && $.isFunction(opt.custom_value)) {
-								opt.custom_value.call($t, $("#"+nm,"#"+fmid),'set',vl);
+								//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
+								//opt.custom_value.call($t, $("#"+nm,"#"+fmid),'set',vl);
+								var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+								var curfield = $('[id="' + nm + '"]',"#"+fmid).not(exclude);
+								opt.custom_value.call($t, curfield,'set',vl);
+								//shuki end
 							} else if(opt.defaultValue ) {
 								//vl = $.isFunction(opt.defaultValue) ? opt.defaultValue.call($t) : opt.defaultValue;
 								//shuki end default value
@@ -609,6 +614,10 @@ $.jgrid.extend({
 						if($t.p.autoencode) {tmp = $.jgrid.htmlDecode(tmp);}
 						if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
 						nm = $.jgrid.jqID(nm);
+						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+						var curfield = $('[id="' + nm + '"]',"#"+fmid).not(exclude);
+						//shuki end
 						switch (cm[i].edittype) {
 							case "password":
 							case "text":
@@ -616,12 +625,18 @@ $.jgrid.extend({
 							case "image":
 							case "textarea":
 								if(tmp === "&nbsp;" || tmp === "&#160;" || (tmp.length===1 && tmp.charCodeAt(0)===160) ) {tmp='';}
-								$("#"+nm,"#"+fmid).val(tmp);
+								//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
+								//$("#"+nm,"#"+fmid).val(tmp);
+								curfield.val(tmp);
+								//shuki end
 								break;
 							case "select":
 								var opv = tmp.split(",");
 								opv = $.map(opv,function(n){return $.trim(n);});
-								$("#"+nm+" option","#"+fmid).each(function(){
+								//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
+								//$("#"+nm+" option","#"+fmid).each(function(){
+								curfield.find('option').each(function(){
+								//shuki end
 									if (!cm[i].editoptions.multiple && ($.trim(tmp) === $.trim($(this).text()) || opv[0] === $.trim($(this).text()) || opv[0] === $.trim($(this).val())) ){
 										this.selected= true;
 									} else if (cm[i].editoptions.multiple){
@@ -640,25 +655,25 @@ $.jgrid.extend({
 								if(cm[i].editoptions && cm[i].editoptions.value) {
 									var cb = cm[i].editoptions.value.split(":");
 									if(cb[0] === tmp) {
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']({"checked":true, "defaultChecked" : true});
+										curfield[$t.p.useProp ? 'prop': 'attr']({"checked":true, "defaultChecked" : true});
 									} else {
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']({"checked":false, "defaultChecked" : false});
+										curfield[$t.p.useProp ? 'prop': 'attr']({"checked":false, "defaultChecked" : false});
 									}
 								} else {
 									tmp = tmp.toLowerCase();
 									if(tmp.search(/(false|f|0|no|n|off|undefined)/i)<0 && tmp!=="") {
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']("checked",true);
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']("defaultChecked",true); //ie
+										curfield[$t.p.useProp ? 'prop': 'attr']("checked",true);
+										curfield[$t.p.useProp ? 'prop': 'attr']("defaultChecked",true); //ie
 									} else {
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']("checked", false);
-										$("#"+nm,"#"+fmid)[$t.p.useProp ? 'prop': 'attr']("defaultChecked", false); //ie
+										curfield[$t.p.useProp ? 'prop': 'attr']("checked", false);
+										curfield[$t.p.useProp ? 'prop': 'attr']("defaultChecked", false); //ie
 									}
 								}
 								break;
 							case 'custom' :
 								try {
 									if(cm[i].editoptions && $.isFunction(cm[i].editoptions.custom_value)) {
-										cm[i].editoptions.custom_value.call($t, $("#"+nm,"#"+fmid),'set',tmp);
+										cm[i].editoptions.custom_value.call($t, curfield,'set',tmp);
 									} else {throw "e1";}
 								} catch (e) {
 									if (e==="e1") {$.jgrid.info_dialog($.jgrid.errors.errcap,"function 'custom_value' "+$.jgrid.edit.msg.nodefined,$.jgrid.edit.bClose);}
@@ -1394,8 +1409,16 @@ $.jgrid.extend({
 							tmp = $(this).html();
 						}
 						nm = $.jgrid.jqID("v_"+nm);
-						$("#"+nm+" span","#"+frmtb).html(tmp);
-						if (hc) {$("#"+nm,"#"+frmtb).parents("tr:first").hide();}
+						console.log($("#"+nm+" span","#"+frmtb));
+						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form'));
+						var curfield = $('[id="' + nm + '"]',"#"+frmtb).not(exclude);
+						var curspan = $('[id="' + nm + '"] span',"#"+frmtb).not(exclude);
+						//$("#"+nm+" span","#"+frmtb).html(tmp);
+						//if (hc) {$("#"+nm,"#"+frmtb).parents("tr:first").hide();}
+						curspan.html(tmp);
+						if (hc) {curfield.parents("tr:first").hide();}
+						//shuki end
 						cnt++;
 					}
 				});
