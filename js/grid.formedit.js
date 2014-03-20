@@ -1409,7 +1409,6 @@ $.jgrid.extend({
 							tmp = $(this).html();
 						}
 						nm = $.jgrid.jqID("v_"+nm);
-						console.log($("#"+nm+" span","#"+frmtb));
 						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
 						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form'));
 						var curfield = $('[id="' + nm + '"]',"#"+frmtb).not(exclude);
