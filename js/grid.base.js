@@ -2076,7 +2076,11 @@ $.fn.jqGrid = function( pin ) {
 			} else if (pginp !== "") { pgl += pginp; }
 			if(dir==="ltr") { pgl += str; }
 			pgl += "</tr></tbody></table>";
-			if(ts.p.viewrecords===true) {$("td#"+pgid+"_"+ts.p.recordpos,"#"+pgcnt).append("<div dir='"+dir+"' style='text-align:"+ts.p.recordpos+"' class='ui-paging-info'></div>");}
+			//shuki 2014-04-08
+			//if(ts.p.viewrecords===true) {$("td#"+pgid+"_"+ts.p.recordpos,"#"+pgcnt).append("<div dir='"+dir+"' style='text-align:"+ts.p.recordpos+"' class='ui-paging-info'></div>");}
+			if(ts.p.viewrecords===true) {$("td#"+pgid+"_"+ts.p.recordpos,"#"+pgcnt).append("<div dir='"+dir+"' style='text-align:"+ts.p.recordpos+"' class='ui-paging-info'></div>" +
+				"<div dir='"+dir+"' class='ui-paging-info-selected'></div>");}
+			//shuki end
 			$("td#"+pgid+"_"+ts.p.pagerpos,"#"+pgcnt).append(pgl);
 			tdw = $(".ui-jqgrid").css("font-size") || "11px";
 			$(document.body).append("<div id='testpg' class='ui-jqgrid ui-widget ui-widget-content' style='font-size:"+tdw+";visibility:hidden;' ></div>");
