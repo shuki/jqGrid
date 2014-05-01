@@ -407,13 +407,15 @@ $.jgrid.extend({
 				// shuki end
 					var celm = $(".customelement", this);
 					if (celm.length) {
-						var  elem = celm[0], nm = $(elem).attr('name');
+						var  elem = celm[0], nm = $(elem).attr('name'), id = $(elem).attr('id');
 						$.each($t.p.colModel, function(){
-							if(this.name === nm && this.editoptions && $.isFunction(this.editoptions.custom_value)) {
+							//if(this.name === nm && this.editoptions && $.isFunction(this.editoptions.custom_value)) {
+							if(this.index === nm && this.editoptions && $.isFunction(this.editoptions.custom_value)) {
 								try {
 									// shuki 2014-02-23:select form elements in any place inside form
 									//postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),frmtb),'get');
-									postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),$(frmtb).closest('form')),'get');
+									//postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(nm),$(frmtb).closest('form')),'get');
+									postdata[nm] = this.editoptions.custom_value.call($t, $("#"+$.jgrid.jqID(id),$(frmtb).closest('form')),'get');
 									// shuki end
 									if (postdata[nm] === undefined) {throw "e1";}
 								} catch (e) {
@@ -475,6 +477,9 @@ $.jgrid.extend({
 				}
 				$(obj.p.colModel).each( function(i) {
 					nm = this.name;
+					//shuki 2014-04-26 get filed name
+					var index = this.index;
+					//shuki end
 					// hidden fields are included in the form
 					if(this.editrules && this.editrules.edithidden === true) {
 						hc = false;
@@ -497,7 +502,10 @@ $.jgrid.extend({
 								if(!tmp || tmp === "&nbsp;" || tmp === "&#160;" || (tmp.length===1 && tmp.charCodeAt(0)===160) ) {tmp='';}
 							}
 						}
-						var opt = $.extend({}, this.editoptions || {} ,{id:nm,name:nm}),
+						//shuki 2014-04-26 pass correct name
+						//var opt = $.extend({}, this.editoptions || {} ,{id:nm,name:nm}),
+						var opt = $.extend({}, this.editoptions || {} ,{id:nm,name:index}),
+						//shuki end
 						frmopt = $.extend({}, {elmprefix:'',elmsuffix:'',rowabove:false,rowcontent:''}, this.formoptions || {}),
 						rp = parseInt(frmopt.rowpos,10) || cnt+1,
 						cp = parseInt((parseInt(frmopt.colpos,10) || 1)*2,10);
