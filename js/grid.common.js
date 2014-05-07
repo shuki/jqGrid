@@ -22,7 +22,10 @@ $.extend($.jgrid,{
 	hideModal : function (selector,o) {
 		o = $.extend({jqm : true, gb :''}, o || {});
 		if(o.onClose) {
-			var oncret = o.gb && typeof o.gb === "string" && o.gb.substr(0,6) === "#gbox_" ? o.onClose.call($("#" + o.gb.substr(6))[0], selector) : o.onClose(selector);
+			//shuki 2014-05-06 force a table selector
+			//var oncret = o.gb && typeof o.gb === "string" && o.gb.substr(0,6) === "#gbox_" ? o.onClose.call($("#" + o.gb.substr(6))[0], selector) : o.onClose(selector);
+			var oncret = o.gb && typeof o.gb === "string" && o.gb.substr(0,6) === "#gbox_" ? o.onClose.call($("table#" + o.gb.substr(6))[0], selector) : o.onClose(selector);
+			//shuki end
 			if (typeof oncret === 'boolean'  && !oncret ) { return; }
 		}
 		if ($.fn.jqm && o.jqm === true) {
