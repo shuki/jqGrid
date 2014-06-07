@@ -601,7 +601,10 @@ $.jgrid.extend({
 					case "custom":
 						try {
 							if($.isFunction(soptions.custom_element)) {
-								var celm = soptions.custom_element.call($t,soptions.defaultValue !== undefined ? soptions.defaultValue: "",$.extend(true, {}, soptions, {name: cm.name}));
+								//shuki 2014-06-06 pass the index too
+								var celm = soptions.custom_element.call($t,soptions.defaultValue !== undefined ? soptions.defaultValue: "",$.extend(true, {}, soptions, {name: cm.name, index: cm.index}));
+								//var celm = soptions.custom_element.call($t,soptions.defaultValue !== undefined ? soptions.defaultValue: "",$.extend(true, {}, soptions, {name: cm.name}));
+								//shuki end
 								if(celm) {
 									celm = $(celm).addClass("customelement inputfilter");
 									$(celm).attr({name:cm.index, id:'gs_'+ cm.name});
