@@ -402,7 +402,7 @@ $.jgrid.extend({
 				//$(frmtb+" > tbody > tr > td > .FormElement").each(function() {
 				//$(".FormElement", $(frmtb).closest('form')).each(function() {
 				// shuki 2014-03-12:exclude jsetgrid components
-				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $(frmtb).closest('form'));
 				$(".FormElement", $(frmtb).closest('form')).not(exclude).each(function() {
 				// shuki end
 					var celm = $(".customelement", this);
@@ -569,7 +569,7 @@ $.jgrid.extend({
 							if(this.edittype === 'custom' && $.isFunction(opt.custom_value)) {
 								//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
 								//opt.custom_value.call($t, $("#"+nm,"#"+fmid),'set',vl);
-								var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+								var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+fmid).closest('form'));
 								var curfield = $('[id="' + nm + '"]',"#"+fmid).not(exclude);
 								opt.custom_value.call($t, curfield,'set',vl);
 								//shuki end
@@ -603,7 +603,7 @@ $.jgrid.extend({
 					});
 					//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
 					//$("#id_g","#"+fmid).val(rowid);
-					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+fmid).closest('form'));
 					var idg = $('[id="id_g"]',"#"+fmid).not(exclude);
 					idg.val(rowid);
 					return;
@@ -627,7 +627,7 @@ $.jgrid.extend({
 						if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
 						nm = $.jgrid.jqID(nm);
 						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
-						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+fmid).closest('form'));
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+fmid).closest('form'));
 						var curfield = $('[id="' + nm + '"]',"#"+fmid).not(exclude);
 						//shuki end
 						switch (cm[i].edittype) {
@@ -699,7 +699,7 @@ $.jgrid.extend({
 				//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
 				//if(cnt>0) {$("#id_g",frmtb).val(rowid);}
 				if(cnt>0){
-					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+					var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $(frmtb).closest('form'));
 					var idg = $('[id="id_g"]',frmtb).not(exclude);
 					idg.val(rowid);
 				}
@@ -970,7 +970,7 @@ $.jgrid.extend({
 				var rowsInGrid = $($t).jqGrid("getDataIDs"),
 				//shuki 2014-03-13 fix the retrival of id_g when jsetgrid exists
 				//selrow = $("#id_g",frmtb).val(),
-				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form')),
+				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $(frmtb).closest('form')),
 				selrow = $('[id="id_g"]',frmtb).not(exclude).val(),
 				//shuki end
 				pos = $.inArray(selrow,rowsInGrid);
@@ -1121,7 +1121,7 @@ $.jgrid.extend({
 					if(rp_ge[$t.p.id].navkeys[0]===true) {
 						//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
 						//if($("#id_g",frmtb).val() === "_empty") {return true;}
-						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $(frmtb).closest('form'));
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $(frmtb).closest('form'));
 						var idg = $('[id="id_g"]',frmtb).not(exclude);
 						if(idg.val() === "_empty") {return true;}
 						//shuki end
@@ -1422,7 +1422,7 @@ $.jgrid.extend({
 						}
 						nm = $.jgrid.jqID("v_"+nm);
 						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
-						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form'));
+						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+frmtb).closest('form'));
 						var curfield = $('[id="' + nm + '"]',"#"+frmtb).not(exclude);
 						var curspan = $('[id="' + nm + '"] span',"#"+frmtb).not(exclude);
 						//$("#"+nm+" span","#"+frmtb).html(tmp);
@@ -1435,7 +1435,7 @@ $.jgrid.extend({
 				});
 				//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
 				//if(cnt>0) {$("#id_g","#"+frmtb).val(rowid);}
-				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form'));
+				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+frmtb).closest('form'));
 				var idg = $('[id="id_g"]',"#"+frmtb).not(exclude);
 				if(cnt>0) {$(idg,"#"+frmtb).val(rowid);}
 				//shuki end
@@ -1461,7 +1461,7 @@ $.jgrid.extend({
 				var rowsInGrid = $($t).jqGrid("getDataIDs"),
 				//shuki 2014-03-13 fix the retrival of id_g when jsetgrid exists
 				//selrow = $("#id_g","#"+frmtb).val(),
-				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement", $("#"+frmtb).closest('form')),
+				exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+frmtb).closest('form')),
 				selrow = $('[id="id_g"]',"#"+frmtb).not(exclude).val(),
 				//shuki end
 				pos = $.inArray(selrow,rowsInGrid);
