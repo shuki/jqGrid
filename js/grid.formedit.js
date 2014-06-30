@@ -11,7 +11,7 @@
 **/
 "use strict";
 // shuki 11/1/2012 apply commit 5888295
-//var rp_ge = {};
+var rp_ge = {};
 //shuki end
 $.jgrid.extend({
 	searchGrid : function (p) {
@@ -366,7 +366,7 @@ $.jgrid.extend({
 			overlayClass : 'ui-widget-overlay'
 		}, $.jgrid.edit, p || {});
 		// shuki 11/1/2012 apply commit 5888295
-		var rp_ge = {};
+		//var rp_ge = {};
 		//shuki end
 		rp_ge[$(this)[0].p.id] = p;
 		return this.each(function(){
@@ -517,7 +517,11 @@ $.jgrid.extend({
 						elc = $.jgrid.createEl.call($t,this.edittype,opt,tmp,false,$.extend({},$.jgrid.ajaxOptions,obj.p.ajaxSelectOptions || {}));
 						//if(tmp === "" && this.edittype == "checkbox") {tmp = $(elc).attr("offval");}
 						//if(tmp === "" && this.edittype == "select") {tmp = $("option:eq(0)",elc).text();}
-						if(rp_ge[$t.p.id].checkOnSubmit || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
+						//shuki 2014-06-29 
+						//if(rp_ge[$t.p.id].checkOnSubmit || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
+						if(!tmp || tmp === "&nbsp;" || tmp === "&#160;" || (tmp.length===1 && tmp.charCodeAt(0)===160) ) {tmp='';}
+						if(rp_ge[$t.p.id].checkOnSubmit || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[index] = tmp;}
+						//shuki end
 						$(elc).addClass("FormElement");
 						if( $.inArray(this.edittype, ['text','textarea','password','select']) > -1) {
 							$(elc).addClass("ui-widget-content ui-corner-all");
@@ -559,6 +563,7 @@ $.jgrid.extend({
 				if(rowid === '_empty') {
 					$(cm).each(function(){
 						nm = this.name;
+						var index = this.index;
 						opt = $.extend({}, this.editoptions || {} );
 						fld = $("#"+$.jgrid.jqID(nm),"#"+fmid);
 						if(fld && fld.length && fld[0] !== null) {
@@ -598,7 +603,10 @@ $.jgrid.extend({
 									fld.val(vl);
 								}
 							}
-							if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = vl;}
+							//shuki 2014-06-30 fix empty string
+							if(!vl || vl === "&nbsp;" || vl === "&#160;" || (vl.length===1 && vl.charCodeAt(0)===160) ) {vl='';}
+							//shuki end
+							if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[index] = vl;}
 						}
 					});
 					//shuki 2014-03-13 fix the assigning of id_g when jsetgrid exists
@@ -612,6 +620,10 @@ $.jgrid.extend({
 				if(!tre) {return;}
 				$('td[role="gridcell"]',tre).each( function(i) {
 					nm = cm[i].name;
+					//shuki 2014-06-29 
+					var index = cm[i].index;
+					//shuki end
+					
 					// hidden fields are included in the form
 					if ( nm !== 'cb' && nm !== 'subgrid' && nm !== 'rn' && cm[i].editable===true) {
 						if(nm === obj.p.ExpandColumn && obj.p.treeGrid === true) {
@@ -624,7 +636,11 @@ $.jgrid.extend({
 							}
 						}
 						if($t.p.autoencode) {tmp = $.jgrid.htmlDecode(tmp);}
-						if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
+						//shuki 2014-06-29 
+						//if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[nm] = tmp;}
+						if(!tmp || tmp === "&nbsp;" || tmp === "&#160;" || (tmp.length===1 && tmp.charCodeAt(0)===160) ) {tmp='';}
+						if(rp_ge[$t.p.id].checkOnSubmit===true || rp_ge[$t.p.id].checkOnUpdate) {rp_ge[$t.p.id]._savedData[index] = tmp;}
+						//shuki end
 						nm = $.jgrid.jqID(nm);
 						//shuki 2014-03-15 fix the assigning of field when jsetgrid exists
 						var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $("#"+fmid).closest('form'));
@@ -914,7 +930,8 @@ $.jgrid.extend({
 			function compareData(nObj, oObj ) {
 				var ret = false,key;
 				for (key in nObj) {
-					if(nObj.hasOwnProperty(key) && nObj[key] != oObj[key]) {
+					if(nObj.hasOwnProperty(key) && oObj.hasOwnProperty(key) && nObj[key] != oObj[key]){
+						console.log(key, nObj[key], oObj[key]);
 						ret = true;
 						break;
 					}
@@ -927,6 +944,7 @@ $.jgrid.extend({
 				if(rp_ge[$t.p.id].checkOnUpdate) {
 					postdata = {};
 					getFormData();
+					console.log($t.p.id, postdata,rp_ge[$t.p.id]._savedData);
 					diff = compareData(postdata,rp_ge[$t.p.id]._savedData);
 					if(diff) {
 						$("#"+frmgr).data("disabled",true);
@@ -1167,13 +1185,20 @@ $.jgrid.extend({
 						$(".confirm","#"+$.jgrid.jqID(IDs.themodal)).hide();
 						return false;
 					});
-					$("#nNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					//shuki 2014-06-30 change between the no and cancel buttons
+					//$("#nNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					$("#cNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					//shuki end
 						$(".confirm","#"+$.jgrid.jqID(IDs.themodal)).hide();
 						$("#"+frmgr).data("disabled",false);
-						setTimeout(function(){$(":input:visible","#"+frmgr)[0].focus();},0);
+						//shuki
+						//setTimeout(function(){$(":input:visible","#"+frmgr)[0].focus();},0);
 						return false;
 					});
-					$("#cNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					//shuki 2014-06-30 change between the no and cancel buttons
+					//$("#cNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					$("#nNew","#"+$.jgrid.jqID(IDs.themodal)).click(function(){
+					//shuki end
 						$(".confirm","#"+$.jgrid.jqID(IDs.themodal)).hide();
 						$("#"+frmgr).data("disabled",false);
 						$.jgrid.hideModal("#"+$.jgrid.jqID(IDs.themodal),{gb:"#gbox_"+$.jgrid.jqID(gID),jqm:p.jqModal,onClose: rp_ge[$t.p.id].onClose});
