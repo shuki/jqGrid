@@ -930,8 +930,8 @@ $.jgrid.extend({
 			function compareData(nObj, oObj ) {
 				var ret = false,key;
 				for (key in nObj) {
+					//shuki 2014-07-05 check only if keys exists in boths objects
 					if(nObj.hasOwnProperty(key) && oObj.hasOwnProperty(key) && nObj[key] != oObj[key]){
-						console.log(key, nObj[key], oObj[key]);
 						ret = true;
 						break;
 					}
@@ -944,7 +944,6 @@ $.jgrid.extend({
 				if(rp_ge[$t.p.id].checkOnUpdate) {
 					postdata = {};
 					getFormData();
-					console.log($t.p.id, postdata,rp_ge[$t.p.id]._savedData);
 					diff = compareData(postdata,rp_ge[$t.p.id]._savedData);
 					if(diff) {
 						$("#"+frmgr).data("disabled",true);
