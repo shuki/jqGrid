@@ -405,7 +405,8 @@ $.jgrid.extend({
 				var exclude = $("div.ui-jqgrid[id^='gbox_'] .FormElement, .ui-search-input .FormElement", $(frmtb).closest('form'));
 				$(".FormElement", $(frmtb).closest('form')).not(exclude).each(function() {
 				// shuki end
-					var celm = $(".customelement", this);
+					exclude = $("div.ui-jqgrid[id^='gbox_'] .customelement", this);
+					var celm = $(".customelement", this).not(exclude);
 					if (celm.length) {
 						var  elem = celm[0], nm = $(elem).attr('name'), id = $(elem).attr('id');
 						$.each($t.p.colModel, function(){
@@ -932,6 +933,7 @@ $.jgrid.extend({
 				for (key in nObj) {
 					//shuki 2014-07-05 check only if keys exists in boths objects
 					if(nObj.hasOwnProperty(key) && oObj.hasOwnProperty(key) && nObj[key] != oObj[key]){
+						//console.log(key, nObj[key], oObj[key]);
 						ret = true;
 						break;
 					}
