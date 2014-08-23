@@ -2228,6 +2228,12 @@ $.jgrid.extend({
 			if(mode==='add') {$($t).jqGrid("addRowData",rowid,griddata, position);}
 			else if(mode==='set') {$($t).jqGrid("setRowData",rowid,griddata);}
 		});
+	},
+	getFormSavedData: function(){
+		var $t = this[0];
+		if (!$t || rp_ge[$t.p.id] === undefined) {return;}
+		return rp_ge[$t.p.id]._savedData !== undefined ? rp_ge[$t.p.id]._savedData : null;
 	}
+
 });
 })(jQuery);
