@@ -449,6 +449,10 @@ $.fn.jqFilter = function( arg ) {
 					cm.searchoptions.size = 10;
 				}
 			}
+			//shuki assign searchoption name 21/02/2017
+			if(!cm.searchoptions.name)
+				cm.searchoptions.name = cm.name;
+			//shuki end
 			var ruleDataInput = $.jgrid.createEl.call($t, cm.inputtype,cm.searchoptions, rule.data, true, that.p.ajaxSelectOptions || {}, true);
 			if(rule.op === 'nu' || rule.op === 'nn') {
 				$(ruleDataInput).attr('readonly','true');
