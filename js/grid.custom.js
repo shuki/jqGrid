@@ -418,7 +418,10 @@ $.jgrid.extend({
 							}
 						}
 						var st = soptions.searchtitle != null ? soptions.searchtitle : p.operandTitle;
-						select = "<a title='"+st+"' style='padding-right: 0.5em;' soper='"+so+"' class='soptclass' colname='"+this.name+"'>"+sot+"</a>";
+						//shuki 10/3/2017 remove padding.
+						//select = "<a title='"+st+"' style='padding-right: 0.5em;' soper='"+so+"' class='soptclass' colname='"+this.name+"'>"+sot+"</a>";
+						select = "<a title='"+st+"' soper='"+so+"' class='soptclass' colname='"+this.name+"'>"+sot+"</a>";
+						//shuki end
 					}
 					$("td:eq(0)",stbl).attr("colindex",ci).append(select);
 					if(soptions.clearSearch === undefined) {
