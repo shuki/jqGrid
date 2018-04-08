@@ -94,7 +94,10 @@ $.jgrid.extend({
 							$($t).jqGrid("restoreCell",iRow,iCol);
 						}
 					} //ESC
-					if (e.keyCode === 13) {
+					//shuki 8/4/2018 - accept return key for textarea
+					//if (e.keyCode === 13) {
+					if (e.keyCode === 13 && (e.target.tagName === undefined || e.target.tagName != 'TEXTAREA')) {
+					//shuki end
 						$($t).jqGrid("saveCell",iRow,iCol);
 						// Prevent default action
 						return false;
