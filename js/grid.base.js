@@ -2978,7 +2978,10 @@ $.jgrid.extend({
 				}
 			} else {
 				//unselect selectall checkbox when deselecting a specific row
-				$t.setHeadCheckBox( false );
+				//shuki 11/12/2019 don't clear selectall checkbox if multiselectDontToggleSelection == true
+				if($($t).data('multiselectDontToggleSelection') !== true)
+					$t.setHeadCheckBox( false );
+				//shuki end
 				$t.p.selrow = pt.id;
 				ia = $.inArray($t.p.selrow,$t.p.selarrrow);
 				if (  ia === -1 ){
@@ -2986,12 +2989,17 @@ $.jgrid.extend({
 					stat = true;
 					$t.p.selarrrow.push($t.p.selrow);
 				} else {
-					if(pt.className !== "ui-subgrid") { $(pt).removeClass("ui-state-highlight").attr("aria-selected","false");}
-					stat = false;
-					$t.p.selarrrow.splice(ia,1);
-					tpsr = $t.p.selarrrow[0];
-					$t.p.selrow = (tpsr === undefined) ? null : tpsr;
+				//shuki 11/12/2019 don't toggle selection of row on multiselect
+					if($($t).data('multiselectDontToggleSelection') !== true){
+						if(pt.className !== "ui-subgrid") { $(pt).removeClass("ui-state-highlight").attr("aria-selected","false");}
+						stat = false;
+						$t.p.selarrrow.splice(ia,1);
+						tpsr = $t.p.selarrrow[0];
+						$t.p.selrow = (tpsr === undefined) ? null : tpsr;
+					} 
 				}
+				$($t).removeData('multiselectDontToggleSelection');
+				//shuki end
 				$("#jqg_"+$.jgrid.jqID($t.p.id)+"_"+$.jgrid.jqID(pt.id))[$t.p.useProp ? 'prop': 'attr']("checked",stat);
 				if(fid) {
 					if(ia === -1) {
