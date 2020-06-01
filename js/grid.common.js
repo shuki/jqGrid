@@ -182,8 +182,8 @@ $.extend($.jgrid,{
 			}
 			$(selector).show().attr("aria-hidden","false");
 			//shuki add focusSelector check for conditional focusing 2012-12-11
-			if(o.focusSelector) //shuki end
-				try{$(':input:visible',selector)[0].focus();}catch(_){}
+			//if(o.focusSelector) //shuki disable as selector was not finding fields. 2020-06-01
+			//	try{$(':input:visible',selector)[0].focus();}catch(_){}
 		}
 	},
 	info_dialog : function(caption, content,c_b, modalopt) {

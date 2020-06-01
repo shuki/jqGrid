@@ -891,7 +891,9 @@ $.jgrid.extend({
 							}
 							rp_ge[$t.p.id].processing=false;
 							$("#sData", frmtb+"_2").removeClass('ui-state-active');
-							try{$(':input:visible',"#"+frmgr)[0].focus();} catch (e){}
+							console.log(rp_ge[$t.p.id]);//shuki console.log
+							if(rp_ge[$t.p.id].focusSelector) //shuki 2020-05-31
+									try{$(':input:visible',"#"+frmgr)[0].focus();} catch (e){}
 						}
 					}, $.jgrid.ajaxOptions, rp_ge[$t.p.id].ajaxEditOptions );
 
